@@ -54,11 +54,43 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAll;
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
+    UIDeviceOrientation Orientation = [[UIDevice currentDevice]orientation];
+//    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+	
+    [self sendEventWithName:@"orientationDidChange" body:@{@"orientation": [self getOrientStr:Orientation]}];
     
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    
-    [self sendEventWithName:@"orientationDidChange" body:@{@"orientation": [self getOrientationStr:orientation]}];
-    
+}
+
+- (NSString *)getOrientStr: (UIDeviceOrientation)orientation {
+	
+	NSString *orientationStr;
+	switch (orientation) {
+		case UIDeviceOrientationPortrait:
+			
+			orientationStr = @"PORTRAIT";
+			break;
+			
+		case UIDeviceOrientationLandscapeLeft:
+			
+			orientationStr = @"LANDSCAPE-RIGHT";
+			break;
+			
+		case UIDeviceOrientationLandscapeRight:
+			
+			orientationStr = @"LANDSCAPE-LEFT";
+			break;
+			
+		case UIDeviceOrientationPortraitUpsideDown:
+			
+			orientationStr = @"PORTRAIT-UPSIDEDOWN";
+			break;
+			
+		default:
+			orientationStr = @"UNKNOWN";
+			break;
+	}
+	return orientationStr;
+	
 }
 
 - (NSString *)getOrientationStr: (UIInterfaceOrientation)orientation {
